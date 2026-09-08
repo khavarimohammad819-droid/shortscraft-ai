@@ -1,4 +1,4 @@
-name: ساخت APK اندروید
+      name: ساخت APK اندروید
 
 on:
   workflow_dispatch:
@@ -32,6 +32,19 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "9.3.1"
+
+      - name: ساخت debug keystore
+        run: |
+          keytool -genkeypair \
+            -v \
+            -keystore "$PROJECT_DIR/debug.keystore" \
+            -alias androiddebugkey \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass android \
+            -keypass android \
+            -dname "CN=Android Debug,O=Android,C=US"
 
       - name: ساخت APK
         run: |
